@@ -1,0 +1,37 @@
+package com.example.pizzarecipes;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.ListView;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.pizzarecipes.adapter.PizzaAdapter;
+import com.example.pizzarecipes.classes.Produit;
+import com.example.pizzarecipes.service.ProduitService;
+
+import java.util.List;
+
+public class list_pizza extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle b) {
+        super.onCreate(b);
+        setContentView(R.layout.activity_list_pizza);
+
+        ListView lv = findViewById(R.id.lvPizzas);
+        List<Produit> pizzas = ProduitService.getInstance().findAll();
+
+        lv.setAdapter(new PizzaAdapter(this, pizzas));
+
+        lv.setOnItemClickListener((parent, view, pos, id) -> {
+            Intent it = new Intent(this, Pizza_Detail.class);
+            it.putExtra("pizza_id", id);
+            startActivity(it);
+        });
+    }
+}
